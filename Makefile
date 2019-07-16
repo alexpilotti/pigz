@@ -1,15 +1,14 @@
 CC=gcc
 CFLAGS=-O3 -Wall -Wextra -Wno-unknown-pragmas
-LDFLAGS=
+LDFLAGS=-shared
 LIBS=-lm -lpthread -lz
 ZOPFLI=zopfli/src/zopfli/
 ZOP=deflate.o blocksplitter.o tree.o lz77.o cache.o hash.o util.o squeeze.o katajainen.o
 
 # use gcc and gmake on Solaris
 
-pigz: pigz.o yarn.o try.o $(ZOP)
-	$(CC) $(LDFLAGS) -o pigz pigz.o yarn.o try.o $(ZOP) $(LIBS)
-	ln -f pigz unpigz
+pigz.so: pigz.o yarn.o try.o $(ZOP)
+	$(CC) $(LDFLAGS) -o pigz.so pigz.o yarn.o try.o $(ZOP) $(LIBS)
 
 pigz.o: pigz.c yarn.h try.h $(ZOPFLI)deflate.h $(ZOPFLI)util.h
 
